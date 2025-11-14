@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([["57150"],{9986:function(e){e.exports=JSON.parse('{"blogBasePath":"/blog/changelog","blogTitle":"Docusaurus changelog","authorsListPath":"/blog/changelog/authors"}')}}]);
