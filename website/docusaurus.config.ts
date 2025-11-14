@@ -99,6 +99,7 @@ const crashTest = process.env.DOCUSAURUS_CRASH_TEST === 'true';
 
 // By default, we use Docusaurus Faster
 // DOCUSAURUS_SLOWER=true is useful for benchmarking faster against slower
+// eslint-disable-next-line max-len
 // hyperfine --prepare 'yarn clear:website' --runs 3 'DOCUSAURUS_SLOWER=true yarn build:website:fast' 'yarn build:website:fast'
 const isSlower = process.env.DOCUSAURUS_SLOWER === 'true';
 if (isSlower) {
@@ -123,8 +124,6 @@ const isBranchDeploy =
 
 // Used to debug production build issues faster
 const isBuildFast = !!process.env.BUILD_FAST;
-
-const baseUrl = process.env.BASE_URL ?? '/';
 
 // Special deployment for staging locales until they get enough translations
 // https://app.netlify.com/sites/docusaurus-i18n-staging
@@ -162,15 +161,15 @@ function getLocalizedConfigValue(key: keyof typeof ConfigLocalized) {
 // See also https://github.com/facebook/docusaurus/issues/11208
 const showLastUpdate = process.env.DOCUSAURUS_CURRENT_LOCALE === defaultLocale;
 
-export default async function createConfigAsync() {
+export default async function createConfigAsync(): Promise<Config> {
   return {
     title: 'Docusaurus',
     tagline: getLocalizedConfigValue('tagline'),
-    organizationName: 'facebook',
-    projectName: 'docusaurus',
-    baseUrl,
+    organizationName: 'zeaver',
+    projectName: 'blog',
+    baseUrl: '/blog/',
     baseUrlIssueBanner: true,
-    url: 'https://docusaurus.io',
+    url: 'https://zeaver.github.io',
     future: {
       v4: !isSlower, // Not accurate, but good enough
       experimental_faster: isSlower
@@ -212,6 +211,7 @@ export default async function createConfigAsync() {
         },
       },
 
+       
       locales:
         isDeployPreview || isBranchDeploy
           ? // Deploy preview and branch deploys: keep them fast!
@@ -259,18 +259,19 @@ export default async function createConfigAsync() {
             const vscodeLink = `vscode://file/${filePath}`;
             const webstormLink = `webstorm://open?file=${filePath}`;
             const intellijLink = `idea://open?file=${filePath}`;
-            result = `${result}\n\n---\n\n**DEV**: open this file in [VSCode](<${vscodeLink}>) | [WebStorm](<${webstormLink}>) | [IntelliJ](<${intellijLink}>)\n`;
+            result = `${result}
+
+---
+
+**DEV**: open this file in [VSCode](<${vscodeLink}>) | [WebStorm](<${webstormLink}>) | [IntelliJ](<${intellijLink}>)
+`;
           }
         }
 
         return result;
       },
     },
-    onBrokenLinks:
-      isVersioningDisabled ||
-      process.env.DOCUSAURUS_CURRENT_LOCALE !== defaultLocale
-        ? 'warn'
-        : 'throw',
+    onBrokenLinks: 'warn',
     onBrokenAnchors:
       isVersioningDisabled ||
       process.env.DOCUSAURUS_CURRENT_LOCALE !== defaultLocale
