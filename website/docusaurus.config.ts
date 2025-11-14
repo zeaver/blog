@@ -170,6 +170,8 @@ export default async function createConfigAsync(): Promise<Config> {
     baseUrl: '/blog/',
     baseUrlIssueBanner: true,
     url: 'https://zeaver.github.io',
+    trailingSlash: false,
+    deploymentBranch: 'main',
     future: {
       v4: !isSlower, // Not accurate, but good enough
       experimental_faster: isSlower
@@ -211,7 +213,6 @@ export default async function createConfigAsync(): Promise<Config> {
         },
       },
 
-       
       locales:
         isDeployPreview || isBranchDeploy
           ? // Deploy preview and branch deploys: keep them fast!
